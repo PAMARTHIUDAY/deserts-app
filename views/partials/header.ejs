@@ -1,0 +1,25 @@
+<header>
+  <div class="nav">
+    <h1><a href="/" style="color:#fff;text-decoration:none;">Sweet Deserts</a></h1>
+    <form class="search-form" action="/menu" method="GET" autocomplete="off">
+      <input type="text" name="q" id="search-input" placeholder="Search desserts..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+      <div id="autocomplete" class="autocomplete"></div>
+    </form>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/menu">Menu</a>
+      <a href="/orders">Orders</a>
+      <a href="/wishlist">Wishlist <span class="badge"><%= wishlistCount %></span></a>
+      <a href="/cart">Cart <span class="badge"><%= cartCount %></span></a>
+      <select id="currency-select" class="currency-select">
+        <% Object.entries(currencies).forEach(([code, c]) => { %>
+          <option value="<%= code %>" <%= currency === code ? "selected" : "" %>><%= c.symbol %> <%= code %></option>
+        <% }) %>
+      </select>
+      <% if (isAdmin) { %>
+        <a href="/admin">Admin</a>
+        <a href="/admin/logout">Logout</a>
+      <% } %>
+    </nav>
+  </div>
+</header>

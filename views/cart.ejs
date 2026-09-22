@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Your Cart - Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="cart-page">
+  <h2>Your Cart</h2>
+  <% if (!items.length) { %>
+    <p>Your cart is empty. <a href="/menu">Browse desserts</a></p>
+  <% } else { %>
+    <table class="cart-table">
+      <thead><tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th><th></th></tr></thead>
+      <tbody>
+        <% items.forEach(i => { %>
+          <tr>
+            <td class="cart-item"><img src="<%= i.image %>" alt=""><span><%= i.name %></span></td>
+            <td><%= formatPrice(i.price) %></td>
+            <td><input type="number" min="1" value="<%= i.qty %>" class="qty-input" data-id="<%= i._id %>"></td>
+            <td><%= formatPrice(i.price * i.qty) %></td>
+            <td><button class="btn-small remove-item" data-id="<%= i._id %>">X</button></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <div class="checkout-grid">
+      <div class="cart-panel">
+        <h3>Shipping Address</h3>
+        <div class="form-grid">
+          <input id="ship-fullName" placeholder="Full name" required>
+          <input id="ship-phone" placeholder="Phone">
+          <input id="ship-address1" placeholder="Address line 1" required>
+          <input id="ship-address2" placeholder="Address line 2 (optional)">
+          <input id="ship-city" placeholder="City" required>
+          <input id="ship-state" placeholder="State / Province">
+          <input id="ship-postalCode" placeholder="Postal code" required>
+          <input id="ship-country" placeholder="Country" required>
+        </div>
+        <h3>Shipping Method</h3>
+        <select id="ship-method">
+          <option value="standard">Standard - $5 (free over $50)</option>
+          <option value="express">Express - $12</option>
+          <option value="overnight">Overnight - $25</option>
+        </select>
+        <h3>Coupon</h3>
+        <div class="coupon-row">
+          <input id="coupon-code" placeholder="WELCOME10, SWEET20, FIVEOFF">
+          <button id="apply-coupon" class="btn-small">Apply</button>
+        </div>
+        <p id="coupon-msg" class="coupon-msg"></p>
+      </div>
+      <div class="cart-panel">
+        <h3>Order Summary</h3>
+        <div class="summary-row"><span>Subtotal</span><span id="sum-subtotal">-</span></div>
+        <div class="summary-row"><span>Discount</span><span id="sum-discount">-</span></div>
+        <div class="summary-row"><span>Shipping</span><span id="sum-shipping">-</span></div>
+        <div class="summary-row"><span>Tax (8%)</span><span id="sum-tax">-</span></div>
+        <div class="summary-row total"><span>Total</span><span id="sum-total">-</span></div>
+        <button id="checkout-btn" class="btn">Checkout with Stripe</button>
+      </div>
+    </div>
+    <button id="clear-cart" class="btn ghost">Clear Cart</button>
+  <% } %>
+</section>
+<script>
+  window.__CURRENCY__ = "<%= currency %>";
+  window.__SYMBOL__ = "<%= currencies[currency].symbol %>";
+  window.__RATE__ = <%= currencies[currency].rate %>;
+</script>
+<%- include('partials/footer') %>
+<script src="/js/cart.js"></script>

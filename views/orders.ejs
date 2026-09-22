@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Orders - Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="orders-page">
+  <h2>Your Orders</h2>
+  <% if (!orders.length) { %>
+    <p>No orders yet. <a href="/menu">Start shopping</a></p>
+  <% } else { %>
+    <% orders.forEach(o => { %>
+      <div class="order-card">
+        <div class="order-head">
+          <div>
+            <strong>#<%= o._id.toString().slice(-8).toUpperCase() %></strong>
+            <small><%= new Date(o.createdAt).toLocaleString() %></small>
+          </div>
+          <span class="status status-<%= o.trackingStatus %>"><%= o.trackingStatus.replace("_", " ") %></span>
+        </div>
+        <p><%= o.items.length %> items - Total <strong><%= formatPrice(o.total) %></strong></p>
+        <p>Tracking #: <code><%= o.trackingNumber %></code></p>
+        <a class="btn-small" href="/orders/track/<%= o._id %>">Track Order</a>
+      </div>
+    <% }) %>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

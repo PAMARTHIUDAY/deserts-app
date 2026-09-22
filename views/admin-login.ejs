@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="admin-login">
+  <h2>Admin Login</h2>
+  <% if (error) { %><p class="error"><%= error %></p><% } %>
+  <form method="POST" action="/admin/login">
+    <label>Email <input type="email" name="email" required></label>
+    <label>Password <input type="password" name="password" required></label>
+    <button class="btn" type="submit">Login</button>
+  </form>
+</section>
+<%- include('partials/footer') %>

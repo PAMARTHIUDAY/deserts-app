@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title><%= dessert.name %> - Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="item-page">
+  <div class="item-gallery">
+    <% (dessert.gallery && dessert.gallery.length ? dessert.gallery : [dessert.image]).forEach(img => { %>
+      <img src="<%= img %>" alt="<%= dessert.name %>" class="main-img">
+    <% }) %>
+  </div>
+  <div class="item-info">
+    <p class="category"><%= dessert.category %></p>
+    <h2><%= dessert.name %></h2>
+    <div class="rating-line">
+      <span class="stars"><%= "*".repeat(Math.round(dessert.avgRating)) %></span>
+      <span class="rating-text"><%= dessert.avgRating %> / 5 - <%= dessert.reviewCount %> reviews</span>
+    </div>
+    <p class="desc"><%= dessert.description %></p>
+    <p class="price big"><%= formatPrice(dessert.price) %></p>
+    <button class="btn add-cart" data-id="<%= dessert._id %>">Add to Cart</button>
+    <button class="btn ghost wishlist-toggle" data-id="<%= dessert._id %>">Wishlist</button>
+    <a class="btn ghost" href="/menu">Back</a>
+  </div>
+</section>
+<section class="reviews-section">
+  <h3>Customer Reviews</h3>
+  <form id="review-form" data-id="<%= dessert._id %>" class="review-form">
+    <h4>Write a Review</h4>
+    <div class="review-grid">
+      <input name="name" placeholder="Your name" required>
+      <input name="email" type="email" placeholder="Your email" required>
+      <select name="rating" required>
+        <option value="">Rating</option>
+        <option value="5">5 stars</option>
+        <option value="4">4 stars</option>
+        <option value="3">3 stars</option>
+        <option value="2">2 stars</option>
+        <option value="1">1 star</option>
+      </select>
+    </div>
+    <textarea name="comment" placeholder="Share your thoughts" required></textarea>
+    <button class="btn" type="submit">Submit Review</button>
+  </form>
+  <div id="reviews-list">
+    <% if (!reviews.length) { %><p class="muted">No reviews yet.</p><% } %>
+    <% reviews.forEach(r => { %>
+      <div class="review">
+        <div class="review-head">
+          <strong><%= r.name %></strong>
+          <span class="stars"><%= "*".repeat(r.rating) %></span>
+          <small><%= new Date(r.createdAt).toLocaleDateString() %></small>
+        </div>
+        <p><%= r.comment %></p>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

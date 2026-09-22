@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#7a1f2b" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="hero">
+  <h2>Delicious Desserts Delivered Fresh</h2>
+  <p>Red Velvet - Brownies - Caramel - Cakes - More</p>
+  <a class="btn" href="/menu">Explore Menu</a>
+</section>
+<section class="categories">
+  <% categories.forEach(cat => { %>
+    <a class="cat-pill" href="/menu?category=<%= cat %>"><%= cat %></a>
+  <% }) %>
+</section>
+<section class="featured">
+  <h2>Featured Desserts</h2>
+  <div class="grid">
+    <% featured.forEach(d => { %>
+      <div class="card">
+        <img src="<%= d.image %>" alt="<%= d.name %>" loading="lazy">
+        <div class="card-body">
+          <h3><%= d.name %></h3>
+          <p class="category"><%= d.category %></p>
+          <p class="desc"><%= d.description %></p>
+          <div class="row">
+            <span class="price"><%= formatPrice(d.price) %></span>
+            <button class="btn-small add-cart" data-id="<%= d._id %>">Add</button>
+          </div>
+          <a class="details-link" href="/dessert/<%= d._id %>">Details</a>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<%- include('partials/footer') %>

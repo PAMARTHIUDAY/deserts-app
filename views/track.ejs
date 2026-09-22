@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Track Order - Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="track-page">
+  <h2>Track Order</h2>
+  <p>Order <code>#<%= order._id.toString().slice(-8).toUpperCase() %></code></p>
+  <p>Tracking #: <strong><%= order.trackingNumber %></strong></p>
+  <ol class="timeline">
+    <% const stages = ["pending","paid","preparing","shipped","out_for_delivery","delivered"]; %>
+    <% const currentIdx = stages.indexOf(order.trackingStatus); %>
+    <% stages.forEach((s, i) => { %>
+      <% const ev = order.trackingHistory && order.trackingHistory.find(h => h.status === s); %>
+      <li class="<%= i <= currentIdx ? 'done' : '' %>">
+        <div class="dot"></div>
+        <div class="content">
+          <strong><%= s.replace("_", " ") %></strong>
+          <% if (ev) { %><small><%= ev.note %> - <%= new Date(ev.at).toLocaleString() %></small><% } else { %><small>Pending...</small><% } %>
+        </div>
+      </li>
+    <% }) %>
+  </ol>
+  <h3>Shipping To</h3>
+  <p>
+    <%= order.shippingAddress.fullName %><br>
+    <%= order.shippingAddress.address1 %><br>
+    <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %> <%= order.shippingAddress.postalCode %><br>
+    <%= order.shippingAddress.country %>
+  </p>
+  <h3>Items</h3>
+  <ul class="track-items">
+    <% order.items.forEach(i => { %>
+      <li><%= i.qty %> x <%= i.name %> - <%= formatPrice(i.price * i.qty) %></li>
+    <% }) %>
+  </ul>
+  <p class="total-line">Total: <strong><%= formatPrice(order.total) %></strong></p>
+</section>
+<%- include('partials/footer') %>

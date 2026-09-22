@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Order Success</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="success-page">
+  <h2>Thank you!</h2>
+  <% if (order) { %>
+    <p>Your order has been placed successfully.</p>
+    <p>Tracking #: <strong><%= order.trackingNumber %></strong></p>
+    <ul>
+      <% order.items.forEach(i => { %>
+        <li><%= i.qty %> x <%= i.name %> - <%= formatPrice(i.price * i.qty) %></li>
+      <% }) %>
+    </ul>
+    <p><strong>Total Paid: <%= formatPrice(order.total) %></strong></p>
+    <a class="btn" href="/orders/track/<%= order._id %>">Track Order</a>
+  <% } else { %>
+    <p>We couldn't find your order, but payment may have succeeded.</p>
+  <% } %>
+  <a class="btn ghost" href="/menu">Continue Shopping</a>
+</section>
+<%- include('partials/footer') %>

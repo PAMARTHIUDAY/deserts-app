@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wishlist - Sweet Deserts</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<%- include('partials/header') %>
+<section class="wishlist-page">
+  <h2>Your Wishlist</h2>
+  <% if (!items.length) { %>
+    <p>No favourites yet. <a href="/menu">Browse desserts</a></p>
+  <% } else { %>
+    <div class="grid">
+      <% items.forEach(d => { %>
+        <div class="card">
+          <img src="<%= d.image %>" alt="<%= d.name %>">
+          <div class="card-body">
+            <h3><%= d.name %></h3>
+            <p class="category"><%= d.category %></p>
+            <div class="row">
+              <span class="price"><%= formatPrice(d.price) %></span>
+              <button class="btn-small add-cart" data-id="<%= d._id %>">Add</button>
+            </div>
+            <button class="btn-small ghost wishlist-toggle" data-id="<%= d._id %>">Remove</button>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

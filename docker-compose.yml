@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    container_name: deserts-app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MONGO_URI=mongodb://mongo:27017/deserts
+      - SESSION_SECRET=change_me_super_secret
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:7
+    container_name: deserts-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:
